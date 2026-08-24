@@ -7,19 +7,24 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+    env:
+      THEOS: ${{ github.workspace }}/theos
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Theos
-        uses: sinsinology/setup-theos@v1
-        with:
-          theos-provider: 'Theos/theos'
-
-      - name: Build .deb
+      - name: Install build tools
         run: |
-          make clean
-          make package FINALPACKAGE=1
+          brew install make ldid dpkg
+
+      - name: Clone Theos
+        run: |
+          git clone --recursive --depth=1 https://github.com/theos/theos.git "$THEOS"
+
+      - name: Build rootless .deb
+        run: |
+          gmake clean || true
+          gmake package FINALPACKAGE=1
 
       - name: Upload .deb
         uses: actions/upload-artifact@v4
