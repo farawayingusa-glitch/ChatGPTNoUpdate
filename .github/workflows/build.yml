@@ -1,0 +1,28 @@
+name: Build Tweak
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Theos
+        uses: sinsinology/setup-theos@v1
+        with:
+          theos-provider: 'Theos/theos'
+
+      - name: Build .deb
+        run: |
+          make clean
+          make package FINALPACKAGE=1
+
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChatGPTNoUpdate-deb
+          path: packages/*.deb
