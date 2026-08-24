@@ -38,8 +38,24 @@ jobs:
           gmake clean || true
           gmake package FINALPACKAGE=1
 
+      - name: Repackage with gzip (Sileo compatibility)
+        run: |
+          mkdir -p dist
+          for deb in packages/*.deb; do
+            base=$(basename "$deb")
+            tmp=$(mktemp -d)
+            dpkg-deb -R "$deb" "$tmp/x"
+            dpkg-deb -Zgzip --build "$tmp/x" "dist/$base"
+            rm -rf "$tmp"
+            echo "rebuilt: $base"
+          done
+          echo "=== verify info ==="
+          dpkg-deb --info dist/*.deb
+          echo "=== verify contents ==="
+          dpkg-deb --contents dist/*.deb
+
       - name: Upload .deb
         uses: actions/upload-artifact@v4
         with:
           name: ChatGPTNoUpdate-deb
-          path: packages/*.deb
+          path: dist/*.deb
