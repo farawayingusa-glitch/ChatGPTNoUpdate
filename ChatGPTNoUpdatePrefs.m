@@ -1,18 +1,27 @@
-#import <Preferences/Preferences.h>
 #import <UIKit/UIKit.h>
+
+// 不链接 Preferences 私有框架（Xcode SDK 下 Theos 找不到），
+// 仅声明接口，运行时 Settings 自带真实 PSListController。
+@interface PSListController : UIViewController
+- (id)loadSpecifiersFromPlistName:(NSString *)name target:(id)target;
+@end
+
+// 类名与 bundle 同名，作为 principal class，PreferenceLoader 才能实例化
+@interface ChatGPTNoUpdatePrefs : PSListController
+@end
 
 static NSString *kLogPath = @"/var/mobile/Library/Preferences/ChatGPTNoUpdate.log";
 
-@interface ChatGPTNoUpdatePrefsListController : PSListController
-@end
-
-@implementation ChatGPTNoUpdatePrefsListController
+@implementation ChatGPTNoUpdatePrefs
 
 - (id)specifiers {
-    if (!_specifiers) {
-        _specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+    // 用 KVC 访问真实 _specifiers，避免声明假 ivar 导致偏移错误
+    id existing = [self valueForKey:@"specifiers"];
+    if (!existing) {
+        existing = [self loadSpecifiersFromPlistName:@"Root" target:self];
+        [self setValue:existing forKey:@"specifiers"];
     }
-    return _specifiers;
+    return existing;
 }
 
 - (void)shareLog {

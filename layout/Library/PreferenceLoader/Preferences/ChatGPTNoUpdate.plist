@@ -8,6 +8,12 @@
 		<string>PSLinkCell</string>
 		<key>label</key>
 		<string>ChatGPTNoUpdate</string>
+		<key>bundle</key>
+		<string>ChatGPTNoUpdatePrefs</string>
+		<key>class</key>
+		<string>ChatGPTNoUpdatePrefs</string>
+		<key>isController</key>
+		<true/>
 	</dict>
 	<key>title</key>
 	<string>ChatGPTNoUpdate</string>

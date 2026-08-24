@@ -15,7 +15,6 @@ BUNDLE_NAME = ChatGPTNoUpdatePrefs
 ChatGPTNoUpdatePrefs_FILES = ChatGPTNoUpdatePrefs.m
 ChatGPTNoUpdatePrefs_INSTALL_PATH = /Library/PreferenceBundles
 ChatGPTNoUpdatePrefs_FRAMEWORKS = UIKit
-ChatGPTNoUpdatePrefs_PRIVATE_FRAMEWORKS = Preferences
 ChatGPTNoUpdatePrefs_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/bundle.mk
