@@ -16,5 +16,6 @@ ChatGPTNoUpdatePrefs_FILES = ChatGPTNoUpdatePrefs.m
 ChatGPTNoUpdatePrefs_INSTALL_PATH = /Library/PreferenceBundles
 ChatGPTNoUpdatePrefs_FRAMEWORKS = UIKit
 ChatGPTNoUpdatePrefs_CFLAGS = -fobjc-arc
+ChatGPTNoUpdatePrefs_LDFLAGS = -F"$(shell xcrun --sdk iphoneos --show-sdk-path)/System/Library/PrivateFrameworks" -framework Preferences
 
 include $(THEOS_MAKE_PATH)/bundle.mk
