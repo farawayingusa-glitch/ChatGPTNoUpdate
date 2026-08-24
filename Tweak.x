@@ -23,7 +23,26 @@ static void CNULog(NSString *format, ...) {
 }
 
 static NSString *CNUTopVC(void) {
-    UIViewController *top = UIApplication.sharedApplication.keyWindow.rootViewController;
+    UIWindow *keyWindow = nil;
+    for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+        if (![scene isKindOfClass:[UIWindowScene class]]) {
+            continue;
+        }
+        UIWindowScene *windowScene = (UIWindowScene *)scene;
+        if (windowScene.activationState != UISceneActivationStateForegroundActive) {
+            continue;
+        }
+        for (UIWindow *window in windowScene.windows) {
+            if (window.isKeyWindow) {
+                keyWindow = window;
+                break;
+            }
+        }
+        if (keyWindow) {
+            break;
+        }
+    }
+    UIViewController *top = keyWindow.rootViewController;
     while (top.presentedViewController) {
         top = top.presentedViewController;
     }
