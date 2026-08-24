@@ -1,4 +1,4 @@
-import UIKit
+#import <UIKit/UIKit.h>
 
 static void CNULog(NSString *format, ...) {
     va_list args;
